@@ -1,5 +1,4 @@
-// Automatically add today's date
-
+// Set today's date automatically
 const dateField = document.getElementById("date");
 
 const today = new Date().toISOString().split("T")[0];
@@ -7,19 +6,23 @@ const today = new Date().toISOString().split("T")[0];
 dateField.value = today;
 
 
-// Form submission
-
+// Handle agreement submission
 document.getElementById("agreementForm").addEventListener("submit", function(event) {
 
     event.preventDefault();
 
-    const clientName = document.getElementById("clientName").value;
-    const email = document.getElementById("email").value;
-    const signature = document.getElementById("signature").value;
-    const agreement = document.getElementById("agree").checked;
+    // Get client information
+    const clientName = document.getElementById("clientName").value.trim();
+    const businessName = document.getElementById("businessName").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const signature = document.getElementById("signature").value.trim();
+    const date = document.getElementById("date").value;
+    const agreed = document.getElementById("agree").checked;
 
-    if (!agreement) {
-        alert("Please agree to the Terms & Conditions.");
+    // Validate agreement
+    if (!agreed) {
+        alert("Please accept the Terms & Conditions.");
         return;
     }
 
@@ -28,14 +31,39 @@ document.getElementById("agreementForm").addEventListener("submit", function(eve
         return;
     }
 
-    // Hide form
-    document.getElementById("agreementForm").style.display = "none";
+    // Replace this with YOUR email address
+    const yourEmail = "rsgokulyt4@gmail.com";
 
-    // Show success message
-    document.getElementById("successMessage").style.display = "block";
+    // Email subject
+    const subject = "Digital Marketing Client Agreement - " + clientName;
 
-    console.log("Client Agreement Submitted");
-    console.log("Client:", clientName);
-    console.log("Email:", email);
-    console.log("Date:", dateField.value);
+    // Email content
+    const body = `
+DIGITAL MARKETING CLIENT AGREEMENT
+
+Client Name: ${clientName}
+Business Name: ${businessName}
+Client Email: ${email}
+Phone Number: ${phone}
+
+Digital Signature: ${signature}
+Agreement Date: ${date}
+
+Terms & Conditions Acceptance: YES
+
+The client has confirmed that they have read and agreed
+to the Digital Marketing Services Terms & Conditions.
+
+Please retain this email as an agreement record.
+    `;
+
+    // Create email link
+    const mailtoLink =
+        "mailto:" + yourEmail +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+
+    // Open the client's email application
+    window.location.href = mailtoLink;
+
 });
